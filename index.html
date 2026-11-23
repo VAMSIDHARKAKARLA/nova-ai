@@ -2,12 +2,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOVA AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071426">
+<title>NOVA AI</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #071426;
+  color: #f4f8ff;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 850px;
+  margin: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #20344e;
+}
+
+.logo {
+  width: 43px;
+  height: 43px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg,#00c8ff,#2563eb);
+  font-size: 23px;
+  font-weight: bold;
+  color: white;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.brand span {
+  color: #00c8ff;
+}
+
+.status {
+  font-size: 12px;
+  color: #8ca5c2;
+  margin-top: 4px;
+}
+
+main {
+  flex: 1;
+  padding: 35px 20px 20px;
+}
+
+.welcome {
+  text-align: center;
+  margin: 55px auto 35px;
+}
+
+.welcome-icon {
+  font-size: 43px;
+  margin-bottom: 18px;
+}
+
+.welcome h1 {
+  font-size: 29px;
+  margin-bottom: 12px;
+}
+
+.welcome h1 span {
+  color: #00c8ff;
+}
+
+.welcome p {
+  color: #9aacc3;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message {
+  max-width: 85%;
+  padding: 13px 16px;
+  border-radius: 15px;
+  line-height: 1.6;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.user {
+  align-self: flex-end;
+  background: #123b60;
+  border: 1px solid #17618d;
+}
+
+.notice {
+  color: #a6bbd2;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 18px;
+}
+
+.composer {
+  padding: 15px;
+  border-top: 1px solid #20344e;
+  background: #0a192d;
+}
+
+.attachments {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.attachments button {
+  border: 1px solid #294765;
+  color: #b9d4ee;
+  background: #10253c;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.input-area {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  background: #10243b;
+  border: 1px solid #294765;
+  border-radius: 15px;
+  padding: 8px;
+}
+
+.input-area input {
+  min-width: 0;
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 10px 5px;
+  font-size: 14px;
+}
+
+.input-area input::placeholder {
+  color: #8196af;
+}
+
+.send {
+  background: #00aee8;
+  color: #001525;
+  border: none;
+  border-radius: 11px;
+  padding: 12px 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.file-info {
+  color: #8fcfff;
+  font-size: 12px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  text-align: center;
+  color: #60748d;
+  font-size: 11px;
+  padding: 12px;
+}
+
+@media(max-width:480px) {
+  main {
+    padding: 20px 14px;
+  }
+
+  .welcome h1 {
+    font-size: 25px;
+  }
+
+  .composer {
+    padding: 12px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <h1>Welcome to NOVA AI</h1>
-  <p>Your intelligent AI assistant.</p>
+<div class="app">
+
+<header>
+  <div class="logo">N</div>
+  <div>
+    <div class="brand">NOVA <span>AI</span></div>
+    <div class="status">Your intelligent AI assistant</div>
+  </div>
+</header>
+
+<main>
+  <section class="welcome" id="welcome">
+    <div class="welcome-icon">✦</div>
+    <h1>Hello, I'm <span>NOVA AI</span></h1>
+    <p>
+      Ask questions, explore ideas and understand
+      information in a simple way.<br>
+      How can I help you today?
+    </p>
+  </section>
+
+  <section class="messages" id="messages"></section>
+  <div class="notice" id="notice"></div>
+</main>
+
+<section class="composer">
+
+  <div class="attachments">
+    <button onclick="document.getElementById('imageFile').click()">
+      ＋ Photo
+    </button>
+
+    <button onclick="document.getElementById('cameraFile').click()">
+      📷 Camera
+    </button>
+
+    <button onclick="document.getElementById('pdfFile').click()">
+      📄 PDF / File
+    </button>
+  </div>
+
+  <input type="file" id="imageFile"
+    accept="image/*" hidden onchange="showFile(this)">
+
+  <input type="file" id="cameraFile"
+    accept="image/*" capture="environment"
+    hidden onchange="showFile(this)">
+
+  <input type="file" id="pdfFile"
+    accept=".pdf,.doc,.docx,.txt"
+    hidden onchange="showFile(this)">
+
+  <div class="input-area">
+    <input id="question"
+      type="text"
+      placeholder="Ask NOVA anything..."
+      onkeydown="if(event.key==='Enter') sendMessage()">
+
+    <button class="send" onclick="sendMessage()">
+      Send
+    </button>
+  </div>
+
+  <div class="file-info" id="fileInfo"></div>
+
+</section>
+
+<footer>
+  NOVA AI · Built to make knowledge simple
+</footer>
+
+</div>
+
+<script>
+let selectedFile = null;
+
+function showFile(input) {
+  if (!input.files || !input.files[0]) return;
+
+  selectedFile = input.files[0];
+
+  document.getElementById('fileInfo').textContent =
+    'Selected: ' + selectedFile.name;
+
+  document.getElementById('notice').textContent =
+    'File selected. AI document processing will be connected next.';
+}
+
+function sendMessage() {
+  const input = document.getElementById('question');
+  const messages = document.getElementById('messages');
+  const text = input.value.trim();
+
+  if (!text && !selectedFile) return;
+
+  document.getElementById('welcome').style.display = 'none';
+
+  const message = document.createElement('div');
+  message.className = 'message user';
+
+  message.textContent =
+    (text || 'Please examine this file') +
+    (selectedFile ? ' | File: ' + selectedFile.name : '');
+
+  messages.appendChild(message);
+
+  input.value = '';
+
+  document.getElementById('notice').textContent =
+    'Your message is displayed. Connect the AI engine in the next development step.';
+
+  selectedFile = null;
+  document.getElementById('fileInfo').textContent = '';
+
+  document.getElementById('imageFile').value = '';
+  document.getElementById('cameraFile').value = '';
+  document.getElementById('pdfFile').value = '';
+}
+</script>
+
 </body>
 </html>
